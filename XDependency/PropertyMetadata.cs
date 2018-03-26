@@ -7,28 +7,34 @@ namespace XDependency
 {
     public class PropertyMetadata : IPropertyMetadata
     {
+        readonly object defaultValue;
+        readonly CreateDefaultValueCallback createDefaultValueCallback;
+        readonly PropertyChangedCallback propertyChangedCallback;
+
         public PropertyMetadata(object defaultValue)
         {
-            throw new NotImplementedException();
+            this.defaultValue = defaultValue;
         }
 
         public PropertyMetadata(object defaultValue, PropertyChangedCallback propertyChangedCallback)
         {
-            throw new NotImplementedException();
+            this.defaultValue = defaultValue;
+            this.propertyChangedCallback = propertyChangedCallback;
         }
 
         public PropertyMetadata(CreateDefaultValueCallback createDefaultValueCallback)
         {
-            throw new NotImplementedException();
+            this.createDefaultValueCallback = createDefaultValueCallback;
         }
 
         public PropertyMetadata(CreateDefaultValueCallback createDefaultValueCallback, PropertyChangedCallback propertyChangedCallback)
         {
-            throw new NotImplementedException();
+            this.createDefaultValueCallback = createDefaultValueCallback;
+            this.propertyChangedCallback = propertyChangedCallback;
         }
 
-        public object DefaultValue => throw new NotImplementedException();
+        public object DefaultValue => defaultValue;
 
-        public CreateDefaultValueCallback CreateDefaultValueCallback => throw new NotImplementedException();
+        public CreateDefaultValueCallback CreateDefaultValueCallback => createDefaultValueCallback;
     }
 }

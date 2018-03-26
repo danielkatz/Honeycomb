@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using XDependency.Abstractions;
+using XDependency.Abstractions.Extensions;
 
 namespace XDependency.Tests.Fakes
 {
@@ -12,7 +13,7 @@ namespace XDependency.Tests.Fakes
         readonly IDependencyComponent component;
 
         public static readonly IDependencyProperty StateProperty = Dependency.Property.Register(
-            "State", typeof(Boolean), typeof(ObjectWithOneProperty), new PropertyMetadata(false));
+            nameof(State), typeof(Boolean), typeof(ObjectWithOneProperty), new PropertyMetadata(false));
 
         public ObjectWithOneProperty()
         {
@@ -20,5 +21,11 @@ namespace XDependency.Tests.Fakes
         }
 
         public IDependencyComponent Component => component;
+
+        public bool State
+        {
+            get => (bool)this.GetValue(StateProperty);
+            set => this.SetValue(StateProperty, value);
+        }
     }
 }
