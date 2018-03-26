@@ -56,7 +56,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BasicTests.cs" />
     <Compile Include="Class1.cs" />
+    <Compile Include="Fakes\EmptyObject.cs" />
+    <Compile Include="Fakes\ObjectWithOneProperty.cs" />
+    <Compile Include="Fixtures\DefaultImplementationFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
