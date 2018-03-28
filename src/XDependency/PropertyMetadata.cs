@@ -33,6 +33,11 @@ namespace XDependency
             this.propertyChangedCallback = propertyChangedCallback;
         }
 
+        public void Merge(IPropertyMetadata baseMetadata)
+        {
+            throw new NotImplementedException();
+        }
+
         public object DefaultValue => defaultValue;
 
         public CreateDefaultValueCallback CreateDefaultValueCallback => createDefaultValueCallback;
