@@ -24,7 +24,17 @@ namespace XDependency
             throw new NotImplementedException();
         }
 
+        public void SetValue(IDependencyPropertyKey key, object value)
+        {
+            throw new NotImplementedException();
+        }
+
         public void ClearValue(IDependencyProperty dp)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ClearValue(IDependencyPropertyKey key)
         {
             throw new NotImplementedException();
         }

@@ -8,7 +8,11 @@ namespace XDependency.Abstractions
 
         void SetValue(IDependencyProperty dp, object value);
 
+        void SetValue(IDependencyPropertyKey key, object value);
+
         void ClearValue(IDependencyProperty dp);
+
+        void ClearValue(IDependencyPropertyKey key);
 
         object ReadLocalValue(IDependencyProperty dp);
 

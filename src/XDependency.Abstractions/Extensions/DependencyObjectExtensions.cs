@@ -16,9 +16,19 @@ namespace XDependency.Abstractions.Extensions
             obj.Component.SetValue(dp, value);
         }
 
+        public static void SetValue(this IDependencyObject obj, IDependencyPropertyKey key, object value)
+        {
+            obj.Component.SetValue(key, value);
+        }
+
         public static void ClearValue(this IDependencyObject obj, IDependencyProperty dp)
         {
-            obj.ClearValue(dp);
+            obj.Component.ClearValue(dp);
+        }
+
+        public static void ClearValue(this IDependencyObject obj, IDependencyPropertyKey key)
+        {
+            obj.Component.ClearValue(key);
         }
 
         public static object ReadLocalValue(this IDependencyObject obj, IDependencyProperty dp)
@@ -38,7 +48,7 @@ namespace XDependency.Abstractions.Extensions
 
         public static void UnregisterPropertyChangedCallback(this IDependencyObject obj, IDependencyProperty dp, long token)
         {
-            obj.UnregisterPropertyChangedCallback(dp, token);
+            obj.Component.UnregisterPropertyChangedCallback(dp, token);
         }
     }
 }
