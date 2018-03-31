@@ -7,5 +7,7 @@ namespace XDependency.Abstractions
     public interface IDependencyProperty
     {
         IPropertyMetadata GetMetadata(Type forType);
+        string Name { get; }
+        bool IsReadOnly { get; }
     }
 }

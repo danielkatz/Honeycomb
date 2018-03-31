@@ -22,5 +22,20 @@ namespace XDependency.Tests
         {
             var obj = new ObjectWithOneProperty();
         }
+
+        [Fact]
+        public void GetPropertyDefaultValue()
+        {
+            var obj = new ObjectWithOneProperty();
+            Assert.False(obj.State);
+        }
+
+        [Fact]
+        public void SetPropertyValue()
+        {
+            var obj = new ObjectWithOneProperty();
+            obj.State = true;
+            Assert.True(obj.State);
+        }
     }
 }
