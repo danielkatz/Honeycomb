@@ -10,5 +10,7 @@ namespace XDependency.Abstractions
         IDependencyPropertyKey RegisterReadOnly(string name, Type propertyType, Type ownerType, IPropertyMetadata typeMetadata);
         IDependencyProperty RegisterAttached(string name, Type propertyType, Type ownerType, IPropertyMetadata defaultMetadata);
         IDependencyPropertyKey RegisterAttachedReadOnly(string name, Type propertyType, Type ownerType, IPropertyMetadata defaultMetadata);
+
+        IPropertyMetadata GetPropertyMetadata(IDependencyProperty dp, Type forType);
     }
 }

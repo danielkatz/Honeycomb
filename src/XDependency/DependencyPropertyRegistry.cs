@@ -8,11 +8,12 @@ namespace XDependency
     public class DependencyPropertyRegistry : IDependencyPropertyRegistry
     {
         //readonly Dictionary<Type, List<IDependencyProperty>> properties = new Dictionary<Type, List<IDependencyProperty>>();
-        //readonly Dictionary<Type, List<IPropertyMetadata>> metadata = new Dictionary<Type, List<IPropertyMetadata>>();
+        readonly Dictionary<IDependencyProperty, Dictionary<Type, IPropertyMetadata>> metadataStore = new Dictionary<IDependencyProperty, Dictionary<Type, IPropertyMetadata>>();
 
         public IDependencyProperty Register(string name, Type propertyType, Type ownerType, IPropertyMetadata typeMetadata)
         {
             var dp = new DependencyProperty(name, false);
+            SetPropertyMetadata(dp, ownerType, typeMetadata);
             return dp;
         }
 
@@ -20,12 +21,14 @@ namespace XDependency
         {
             var dp = new DependencyProperty(name, true);
             var dpk = new DependencyPropertyKey(dp);
+            SetPropertyMetadata(dp, ownerType, typeMetadata);
             return dpk;
         }
 
         public IDependencyProperty RegisterAttached(string name, Type propertyType, Type ownerType, IPropertyMetadata defaultMetadata)
         {
             var dp = new DependencyProperty(name, false);
+            SetPropertyMetadata(dp, ownerType, defaultMetadata);
             return dp;
         }
 
@@ -33,7 +36,24 @@ namespace XDependency
         {
             var dp = new DependencyProperty(name, true);
             var dpk = new DependencyPropertyKey(dp);
+            SetPropertyMetadata(dp, ownerType, defaultMetadata);
             return dpk;
+        }
+
+        IPropertyMetadata SetPropertyMetadata(IDependencyProperty dp, Type ownerType, IPropertyMetadata typeMetadata)
+        {
+            if (!metadataStore.TryGetValue(dp, out var propertyMetadata))
+            {
+                propertyMetadata = new Dictionary<Type, IPropertyMetadata>();
+                metadataStore[dp] = propertyMetadata;
+            }
+            propertyMetadata[ownerType] = typeMetadata;
+            return typeMetadata;
+        }
+
+        public IPropertyMetadata GetPropertyMetadata(IDependencyProperty dp, Type forType)
+        {
+            return this.metadataStore[dp][forType];
         }
     }
 }

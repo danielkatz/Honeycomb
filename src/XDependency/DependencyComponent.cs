@@ -2,35 +2,49 @@
 using System.Collections.Generic;
 using System.Text;
 using XDependency.Abstractions;
+using XDependency.Abstractions.Extensions;
 
 namespace XDependency
 {
     public class DependencyComponent : IDependencyComponent
     {
-        IDependencyObject obj;
+        readonly Type ownerType;
+        readonly IDependencyObject owner;
 
-        public DependencyComponent(IDependencyObject obj)
+        readonly Dictionary<IDependencyProperty, object> localStore = new Dictionary<IDependencyProperty, object>();
+
+        public DependencyComponent(IDependencyObject owner)
         {
-            this.obj = obj;
+            this.owner = owner;
+            this.ownerType = owner.GetType();
         }
 
         public object GetValue(IDependencyProperty dp)
         {
-            throw new NotImplementedException();
+            if (localStore.TryGetValue(dp, out var value))
+            {
+                return value;
+            }
+            var metadata = dp.GetMetadata(ownerType);
+            return metadata.DefaultValue;
         }
 
         public void SetValue(IDependencyProperty dp, object value)
         {
-            throw new NotImplementedException();
+            EnsureNotReadOnly(dp);
+
+            localStore[dp] = value;
         }
 
         public void SetValue(IDependencyPropertyKey key, object value)
         {
-            throw new NotImplementedException();
+            localStore[key.DependencyProperty] = value;
         }
 
         public void ClearValue(IDependencyProperty dp)
         {
+            EnsureNotReadOnly(dp);
+
             throw new NotImplementedException();
         }
 
@@ -57,6 +71,12 @@ namespace XDependency
         public void UnregisterPropertyChangedCallback(IDependencyProperty dp, long token)
         {
             throw new NotImplementedException();
+        }
+
+        static void EnsureNotReadOnly(IDependencyProperty dp)
+        {
+            if (dp.IsReadOnly)
+                throw new InvalidOperationException($"{dp.Name} is a read only property and should be changed using an {nameof(IDependencyPropertyKey)}");
         }
     }
 }
