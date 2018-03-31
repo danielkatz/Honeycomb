@@ -45,12 +45,18 @@ namespace XDependency
         {
             EnsureNotReadOnly(dp);
 
-            throw new NotImplementedException();
+            if (localStore.ContainsKey(dp))
+            {
+                localStore.Remove(dp);
+            }
         }
 
         public void ClearValue(IDependencyPropertyKey key)
         {
-            throw new NotImplementedException();
+            if (localStore.ContainsKey(key.DependencyProperty))
+            {
+                localStore.Remove(key.DependencyProperty);
+            }
         }
 
         public object ReadLocalValue(IDependencyProperty dp)

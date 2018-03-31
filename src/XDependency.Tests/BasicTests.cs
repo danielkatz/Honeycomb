@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XDependency.Abstractions.Extensions;
 using XDependency.Tests.Fakes;
 using XDependency.Tests.Fixtures;
 using Xunit;
@@ -36,6 +37,15 @@ namespace XDependency.Tests
             var obj = new ObjectWithOneProperty();
             obj.State = true;
             Assert.True(obj.State);
+        }
+
+        [Fact]
+        public void ResetPropertyValue()
+        {
+            var obj = new ObjectWithOneProperty();
+            obj.State = true;
+            obj.ClearValue(ObjectWithOneProperty.StateProperty);
+            Assert.False(obj.State);
         }
     }
 }
