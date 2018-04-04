@@ -23,7 +23,7 @@ namespace XDependency.Tests
         }
 
         [Fact]
-        public void GetPropertyDefaultValue()
+        public void GetMemberPropertyDefaultValue()
         {
             using (new DefaultImplementationFixture())
             {
@@ -35,7 +35,19 @@ namespace XDependency.Tests
         }
 
         [Fact]
-        public void SetPropertyValue()
+        public void GetAttachedPropertyDefaultValue()
+        {
+            using (new DefaultImplementationFixture())
+            {
+                var prop = Dependency.Property.RegisterAttached("IsEnabled", typeof(bool), typeof(DependencyObjectFake), new PropertyMetadata(true));
+                var fake = new SecondDependencyObjectFake();
+
+                Assert.True((bool)fake.GetValue(prop));
+            }
+        }
+
+        [Fact]
+        public void SetMemberPropertyValue()
         {
             using (new DefaultImplementationFixture())
             {
@@ -49,7 +61,21 @@ namespace XDependency.Tests
         }
 
         [Fact]
-        public void SetReadonlyPropertyValueViaDP()
+        public void SetAttachedPropertyValue()
+        {
+            using (new DefaultImplementationFixture())
+            {
+                var prop = Dependency.Property.RegisterAttached("IsEnabled", typeof(bool), typeof(DependencyObjectFake), new PropertyMetadata(true));
+                var fake = new SecondDependencyObjectFake();
+
+                fake.SetValue(prop, false);
+
+                Assert.False((bool)fake.GetValue(prop));
+            }
+        }
+
+        [Fact]
+        public void SetMemberReadOnlyPropertyValueViaDP()
         {
             using (new DefaultImplementationFixture())
             {
@@ -62,7 +88,20 @@ namespace XDependency.Tests
         }
 
         [Fact]
-        public void SetReadonlyPropertyValueViaDPKey()
+        public void SetAttachedReadOnlyPropertyValueViaDP()
+        {
+            using (new DefaultImplementationFixture())
+            {
+                var propKey = Dependency.Property.RegisterAttachedReadOnly("IsEnabled", typeof(bool), typeof(DependencyObjectFake), new PropertyMetadata(true));
+                var prop = propKey.DependencyProperty;
+                var fake = new SecondDependencyObjectFake();
+
+                Assert.Throws<InvalidOperationException>(() => fake.SetValue(prop, false));
+            }
+        }
+
+        [Fact]
+        public void SetMemberReadOnlyPropertyValueViaDPKey()
         {
             using (new DefaultImplementationFixture())
             {
@@ -76,7 +115,21 @@ namespace XDependency.Tests
         }
 
         [Fact]
-        public void ClearPropertyValue()
+        public void SetAttachedReadOnlyPropertyValueViaDPKey()
+        {
+            using (new DefaultImplementationFixture())
+            {
+                var propKey = Dependency.Property.RegisterAttachedReadOnly("IsEnabled", typeof(bool), typeof(DependencyObjectFake), new PropertyMetadata(true));
+                var fake = new SecondDependencyObjectFake();
+
+                fake.SetValue(propKey, false);
+
+                Assert.False((bool)fake.GetValue(propKey.DependencyProperty));
+            }
+        }
+
+        [Fact]
+        public void ClearMemberPropertyValue()
         {
             using (new DefaultImplementationFixture())
             {
@@ -87,6 +140,21 @@ namespace XDependency.Tests
                 owner.ClearValue(prop);
 
                 Assert.True((bool)owner.GetValue(prop));
+            }
+        }
+
+        [Fact]
+        public void ClearAttachedPropertyValue()
+        {
+            using (new DefaultImplementationFixture())
+            {
+                var prop = Dependency.Property.RegisterAttached("IsEnabled", typeof(bool), typeof(DependencyObjectFake), new PropertyMetadata(true));
+                var fake = new SecondDependencyObjectFake();
+
+                fake.SetValue(prop, false);
+                fake.ClearValue(prop);
+
+                Assert.True((bool)fake.GetValue(prop));
             }
         }
     }

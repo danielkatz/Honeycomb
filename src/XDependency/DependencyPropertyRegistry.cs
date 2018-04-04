@@ -11,25 +11,28 @@ namespace XDependency
 
         public IDependencyProperty Register(string name, Type propertyType, Type ownerType, IPropertyMetadata typeMetadata)
         {
-            var dp = new DependencyProperty(name, propertyType, ownerType, typeMetadata);
+            var dp = new MemberDependencyProperty(name, propertyType, ownerType, typeMetadata);
             return dp;
         }
 
         public IDependencyPropertyKey RegisterReadOnly(string name, Type propertyType, Type ownerType, IPropertyMetadata typeMetadata)
         {
-            var dp = new DependencyProperty(name, propertyType, ownerType, typeMetadata);
+            var dp = new MemberDependencyProperty(name, propertyType, ownerType, typeMetadata);
             var key = new DependencyPropertyKey(dp);
             return key;
         }
 
         public IDependencyProperty RegisterAttached(string name, Type propertyType, Type ownerType, IPropertyMetadata defaultMetadata)
         {
-            throw new NotImplementedException();
+            var dp = new AttachedDependencyProperty(name, propertyType, ownerType, defaultMetadata);
+            return dp;
         }
 
         public IDependencyPropertyKey RegisterAttachedReadOnly(string name, Type propertyType, Type ownerType, IPropertyMetadata defaultMetadata)
         {
-            throw new NotImplementedException();
+            var dp = new AttachedDependencyProperty(name, propertyType, ownerType, defaultMetadata);
+            var key = new DependencyPropertyKey(dp);
+            return key;
         }
     }
 }

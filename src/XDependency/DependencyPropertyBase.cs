@@ -20,20 +20,7 @@ namespace XDependency
             this.DefaultMetadata = defaultMetadata;
         }
 
-        public IPropertyMetadata GetMetadata(Type forType)
-        {
-            forType.EnsureDependencyObject();
-
-            for (var type = forType; type.IsDependencyObject(); type = type.BaseType)
-            {
-                if (metadataMap.TryGetValue(type, out var metadata))
-                {
-                    return metadata;
-                }
-            }
-
-            return DefaultMetadata;
-        }
+        public abstract IPropertyMetadata GetMetadata(Type forType);
 
         internal void SetReadOnlyKey(IDependencyPropertyKey readOnlyKey)
         {

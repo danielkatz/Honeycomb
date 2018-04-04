@@ -59,6 +59,7 @@
     <Compile Include="DependencyObjectTests.cs" />
     <Compile Include="DependencyPropertyTests.cs" />
     <Compile Include="Fakes\DependencyObjectFake.cs" />
+    <Compile Include="Fakes\SecondDependencyObjectFake.cs" />
     <Compile Include="Fixtures\DefaultImplementationFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
