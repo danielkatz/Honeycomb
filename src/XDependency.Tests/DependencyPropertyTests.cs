@@ -11,7 +11,7 @@ using Xunit;
 
 namespace XDependency.Tests
 {
-    public class DependencyPropertyRegistryTests
+    public class DependencyPropertyTests
     {
         [Fact]
         public void RegisterReadWriteProperty()
@@ -81,14 +81,14 @@ namespace XDependency.Tests
         }
 
         [Fact]
-        public void GetPropertyMetadataForDcecendandType()
+        public void GetPropertyMetadataForDescendantType()
         {
             using (new DefaultImplementationFixture())
             {
                 var metadata = new PropertyMetadata(false);
                 var prop = Dependency.Property.Register("IsEnabled", typeof(bool), typeof(DependencyObjectFake), metadata);
 
-                var actual = prop.GetMetadata(typeof(DcecendandDependencyObjectFake));
+                var actual = prop.GetMetadata(typeof(DescendantDependencyObjectFake));
                 Assert.Same(metadata, actual);
             }
         }
@@ -121,7 +121,7 @@ namespace XDependency.Tests
 
         private class UnrelatedPOCO { }
 
-        private class DcecendandDependencyObjectFake : DependencyObjectFake
+        private class DescendantDependencyObjectFake : DependencyObjectFake
         {
         }
 
