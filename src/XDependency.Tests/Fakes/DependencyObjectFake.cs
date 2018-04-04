@@ -9,13 +9,11 @@ namespace XDependency.Tests.Fakes
 {
     public class DependencyObjectFake : IDependencyObject
     {
-        readonly IDependencyComponent component;
-
         public DependencyObjectFake()
         {
-            component = Dependency.Component.Create(this);
+            Component = Dependency.Component.Create(this);
         }
 
-        public IDependencyComponent Component => component;
+        public IDependencyComponent Component { get; }
     }
 }

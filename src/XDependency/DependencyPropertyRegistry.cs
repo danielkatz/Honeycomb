@@ -12,48 +12,69 @@ namespace XDependency
 
         public IDependencyProperty Register(string name, Type propertyType, Type ownerType, IPropertyMetadata typeMetadata)
         {
-            var dp = new DependencyProperty(name, propertyType, ownerType, false);
-            SetPropertyMetadata(dp, ownerType, typeMetadata);
+            var dp = RegisterCommon(name, propertyType, ownerType, null);
+            OverrideMetadata(dp, ownerType, typeMetadata);
             return dp;
         }
 
         public IDependencyPropertyKey RegisterReadOnly(string name, Type propertyType, Type ownerType, IPropertyMetadata typeMetadata)
         {
-            var dp = new DependencyProperty(name, propertyType, ownerType, true);
-            var dpk = new DependencyPropertyKey(dp);
-            SetPropertyMetadata(dp, ownerType, typeMetadata);
-            return dpk;
+            var dp = RegisterCommon(name, propertyType, ownerType, null);
+            var key = new DependencyPropertyKey(dp);
+            OverrideMetadata(dp, ownerType, typeMetadata);
+            return key;
         }
 
         public IDependencyProperty RegisterAttached(string name, Type propertyType, Type ownerType, IPropertyMetadata defaultMetadata)
         {
-            var dp = new DependencyProperty(name, propertyType, ownerType, false);
-            SetPropertyMetadata(dp, ownerType, defaultMetadata);
-            return dp;
+            throw new NotImplementedException();
         }
 
         public IDependencyPropertyKey RegisterAttachedReadOnly(string name, Type propertyType, Type ownerType, IPropertyMetadata defaultMetadata)
         {
-            var dp = new DependencyProperty(name, propertyType, ownerType, true);
-            var dpk = new DependencyPropertyKey(dp);
-            SetPropertyMetadata(dp, ownerType, defaultMetadata);
-            return dpk;
+            throw new NotImplementedException();
         }
 
-        IPropertyMetadata SetPropertyMetadata(IDependencyProperty dp, Type ownerType, IPropertyMetadata typeMetadata)
+        DependencyProperty RegisterCommon(string name, Type propertyType, Type ownerType, IPropertyMetadata defaultMetadata)
+        {
+            EnsureDependencyObject(ownerType);
+
+            if (defaultMetadata == null)
+            {
+                defaultMetadata = CreateDefaultMetadata(propertyType);
+            }
+
+            var dp = new DependencyProperty(name, propertyType, ownerType, defaultMetadata);
+            return dp;
+        }
+
+        IPropertyMetadata CreateDefaultMetadata(Type propertyType)
+        {
+            var defaultValue = propertyType.GetDefaultValue();
+            return new PropertyMetadata(defaultValue);
+        }
+
+        public IPropertyMetadata GetPropertyMetadata(IDependencyProperty dp, Type forType)
+        {
+            EnsureDependencyObject(forType);
+
+            return this.metadataStore[dp][forType];
+        }
+
+        void OverrideMetadata(IDependencyProperty dp, Type forType, IPropertyMetadata typeMetadata)
         {
             if (!metadataStore.TryGetValue(dp, out var propertyMetadata))
             {
                 propertyMetadata = new Dictionary<Type, IPropertyMetadata>();
                 metadataStore[dp] = propertyMetadata;
             }
-            propertyMetadata[ownerType] = typeMetadata;
-            return typeMetadata;
+            propertyMetadata[forType] = typeMetadata;
         }
 
-        public IPropertyMetadata GetPropertyMetadata(IDependencyProperty dp, Type forType)
+        static void EnsureDependencyObject(Type type)
         {
-            return this.metadataStore[dp][forType];
+            if (!typeof(IDependencyObject).IsAssignableFrom(type))
+                throw new InvalidOperationException($"{type} doesn't implement {nameof(IDependencyObject)}");
         }
     }
 }

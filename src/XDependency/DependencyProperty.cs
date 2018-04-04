@@ -7,22 +7,28 @@ namespace XDependency
 {
     public class DependencyProperty : IDependencyProperty
     {
-        public DependencyProperty(string name, Type propertyType, Type ownerType, bool isReadOnly)
+        IDependencyPropertyKey readOnlyKey = null;
+
+        public DependencyProperty(string name, Type propertyType, Type ownerType, IPropertyMetadata defaultMetadata)
         {
             this.Name = name;
-            this.IsReadOnly = isReadOnly;
             this.PropertyType = propertyType;
             this.OwnerType = ownerType;
+            this.DefaultMetadata = defaultMetadata;
         }
 
-        public IPropertyMetadata GetMetadata(Type forType)
+        internal void SetReadOnlyKey(IDependencyPropertyKey readOnlyKey)
         {
-            throw new NotImplementedException();
+            if (this.readOnlyKey != null)
+                throw new InvalidOperationException("The key is already set.");
+
+            this.readOnlyKey = readOnlyKey;
         }
 
         public string Name { get; }
         public Type PropertyType { get; }
         public Type OwnerType { get; }
-        public bool IsReadOnly { get; }
+        public IPropertyMetadata DefaultMetadata { get; }
+        public bool IsReadOnly => readOnlyKey != null;
     }
 }

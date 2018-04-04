@@ -1,12 +1,14 @@
-﻿using XDependency.Abstractions;
+﻿using System;
+using XDependency.Abstractions;
 
 namespace XDependency
 {
-    internal class DependencyPropertyKey : IDependencyPropertyKey
+    public class DependencyPropertyKey : IDependencyPropertyKey
     {
-        public DependencyPropertyKey(IDependencyProperty dp)
+        internal DependencyPropertyKey(DependencyProperty dp)
         {
-            this.DependencyProperty = dp;
+            dp.SetReadOnlyKey(this);
+            DependencyProperty = dp;
         }
 
         public IDependencyProperty DependencyProperty { get; }
