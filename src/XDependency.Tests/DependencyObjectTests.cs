@@ -49,6 +49,33 @@ namespace XDependency.Tests
         }
 
         [Fact]
+        public void SetReadonlyPropertyValueViaDP()
+        {
+            using (new DefaultImplementationFixture())
+            {
+                var propKey = Dependency.Property.RegisterReadOnly("IsEnabled", typeof(bool), typeof(DependencyObjectFake), new PropertyMetadata(true));
+                var prop = propKey.DependencyProperty;
+                var owner = new DependencyObjectFake();
+
+                Assert.Throws<InvalidOperationException>(() => owner.SetValue(prop, false));
+            }
+        }
+
+        [Fact]
+        public void SetReadonlyPropertyValueViaDPKey()
+        {
+            using (new DefaultImplementationFixture())
+            {
+                var propKey = Dependency.Property.RegisterReadOnly("IsEnabled", typeof(bool), typeof(DependencyObjectFake), new PropertyMetadata(true));
+                var owner = new DependencyObjectFake();
+
+                owner.SetValue(propKey, false);
+
+                Assert.False((bool)owner.GetValue(propKey.DependencyProperty));
+            }
+        }
+
+        [Fact]
         public void ClearPropertyValue()
         {
             using (new DefaultImplementationFixture())
