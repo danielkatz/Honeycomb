@@ -7,10 +7,12 @@ namespace XDependency
 {
     public class DependencyProperty : IDependencyProperty
     {
-        public DependencyProperty(string name, bool isReadOnly)
+        public DependencyProperty(string name, Type propertyType, Type ownerType, bool isReadOnly)
         {
             this.Name = name;
             this.IsReadOnly = isReadOnly;
+            this.PropertyType = propertyType;
+            this.OwnerType = ownerType;
         }
 
         public IPropertyMetadata GetMetadata(Type forType)
@@ -19,6 +21,8 @@ namespace XDependency
         }
 
         public string Name { get; }
+        public Type PropertyType { get; }
+        public Type OwnerType { get; }
         public bool IsReadOnly { get; }
     }
 }

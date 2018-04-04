@@ -56,9 +56,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BasicTests.cs" />
-    <Compile Include="Fakes\EmptyObject.cs" />
-    <Compile Include="Fakes\ObjectWithOneProperty.cs" />
+    <Compile Include="DependencyObjectTests.cs" />
+    <Compile Include="DependencyPropertyRegistryTests.cs" />
+    <Compile Include="Fakes\DependencyObjectFake.cs" />
     <Compile Include="Fixtures\DefaultImplementationFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

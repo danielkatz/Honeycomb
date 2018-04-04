@@ -8,5 +8,7 @@ namespace XDependency.Abstractions
     {
         string Name { get; }
         bool IsReadOnly { get; }
+        Type PropertyType { get; }
+        Type OwnerType { get; }
     }
 }

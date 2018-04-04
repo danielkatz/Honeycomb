@@ -7,11 +7,11 @@ using XDependency.Abstractions;
 
 namespace XDependency.Tests.Fakes
 {
-    public class EmptyObject : IDependencyObject
+    public class DependencyObjectFake : IDependencyObject
     {
         readonly IDependencyComponent component;
 
-        public EmptyObject()
+        public DependencyObjectFake()
         {
             component = Dependency.Component.Create(this);
         }

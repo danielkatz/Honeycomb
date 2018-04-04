@@ -12,14 +12,14 @@ namespace XDependency
 
         public IDependencyProperty Register(string name, Type propertyType, Type ownerType, IPropertyMetadata typeMetadata)
         {
-            var dp = new DependencyProperty(name, false);
+            var dp = new DependencyProperty(name, propertyType, ownerType, false);
             SetPropertyMetadata(dp, ownerType, typeMetadata);
             return dp;
         }
 
         public IDependencyPropertyKey RegisterReadOnly(string name, Type propertyType, Type ownerType, IPropertyMetadata typeMetadata)
         {
-            var dp = new DependencyProperty(name, true);
+            var dp = new DependencyProperty(name, propertyType, ownerType, true);
             var dpk = new DependencyPropertyKey(dp);
             SetPropertyMetadata(dp, ownerType, typeMetadata);
             return dpk;
@@ -27,14 +27,14 @@ namespace XDependency
 
         public IDependencyProperty RegisterAttached(string name, Type propertyType, Type ownerType, IPropertyMetadata defaultMetadata)
         {
-            var dp = new DependencyProperty(name, false);
+            var dp = new DependencyProperty(name, propertyType, ownerType, false);
             SetPropertyMetadata(dp, ownerType, defaultMetadata);
             return dp;
         }
 
         public IDependencyPropertyKey RegisterAttachedReadOnly(string name, Type propertyType, Type ownerType, IPropertyMetadata defaultMetadata)
         {
-            var dp = new DependencyProperty(name, true);
+            var dp = new DependencyProperty(name, propertyType, ownerType, true);
             var dpk = new DependencyPropertyKey(dp);
             SetPropertyMetadata(dp, ownerType, defaultMetadata);
             return dpk;
