@@ -7,7 +7,6 @@ namespace XDependency
     {
         internal DependencyPropertyKey(DependencyPropertyBase dp)
         {
-            dp.SetReadOnlyKey(this);
             DependencyProperty = dp;
         }
 

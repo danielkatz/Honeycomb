@@ -22,12 +22,13 @@ namespace XDependency
 
         public abstract IPropertyMetadata GetMetadata(Type forType);
 
-        internal void SetReadOnlyKey(IDependencyPropertyKey readOnlyKey)
+        public IDependencyPropertyKey MakeReadOnly()
         {
-            if (this.readOnlyKey != null)
-                throw new InvalidOperationException("The key is already set.");
+            if (readOnlyKey != null)
+                throw new InvalidOperationException("The property is already read-only.");
 
-            this.readOnlyKey = readOnlyKey;
+            readOnlyKey = new DependencyPropertyKey(this);
+            return readOnlyKey;
         }
 
         public string Name { get; }

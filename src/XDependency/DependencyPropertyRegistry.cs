@@ -18,7 +18,7 @@ namespace XDependency
         public IDependencyPropertyKey RegisterReadOnly(string name, Type propertyType, Type ownerType, IPropertyMetadata typeMetadata)
         {
             var dp = new MemberDependencyProperty(name, propertyType, ownerType, typeMetadata);
-            var key = new DependencyPropertyKey(dp);
+            var key = dp.MakeReadOnly();
             return key;
         }
 
@@ -31,7 +31,7 @@ namespace XDependency
         public IDependencyPropertyKey RegisterAttachedReadOnly(string name, Type propertyType, Type ownerType, IPropertyMetadata defaultMetadata)
         {
             var dp = new AttachedDependencyProperty(name, propertyType, ownerType, defaultMetadata);
-            var key = new DependencyPropertyKey(dp);
+            var key = dp.MakeReadOnly();
             return key;
         }
     }
