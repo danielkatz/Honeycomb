@@ -12,8 +12,6 @@ namespace XDependency
 
         public DependencyPropertyBase(string name, Type propertyType, Type ownerType, IPropertyMetadata defaultMetadata)
         {
-            ownerType.EnsureDependencyObject();
-
             this.Name = name;
             this.PropertyType = propertyType;
             this.OwnerType = ownerType;

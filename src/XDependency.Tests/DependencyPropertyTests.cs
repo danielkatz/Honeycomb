@@ -85,15 +85,7 @@ namespace XDependency.Tests
 
             using (new DefaultImplementationFixture())
                 Assert.Throws<InvalidOperationException>(
-                    () => Dependency.Property.RegisterAttached("IsEnabled", typeof(bool), typeof(Object), new PropertyMetadata(false)));
-
-            using (new DefaultImplementationFixture())
-                Assert.Throws<InvalidOperationException>(
                     () => Dependency.Property.RegisterReadOnly("IsEnabled", typeof(bool), typeof(Object), new PropertyMetadata(false)));
-
-            using (new DefaultImplementationFixture())
-                Assert.Throws<InvalidOperationException>(
-                    () => Dependency.Property.RegisterAttachedReadOnly("IsEnabled", typeof(bool), typeof(Object), new PropertyMetadata(false)));
 
             // unrelated POCO
             using (new DefaultImplementationFixture())
@@ -102,15 +94,23 @@ namespace XDependency.Tests
 
             using (new DefaultImplementationFixture())
                 Assert.Throws<InvalidOperationException>(
-                    () => Dependency.Property.RegisterAttached("IsEnabled", typeof(bool), typeof(UnrelatedPOCOFake), new PropertyMetadata(false)));
-
-            using (new DefaultImplementationFixture())
-                Assert.Throws<InvalidOperationException>(
                     () => Dependency.Property.RegisterReadOnly("IsEnabled", typeof(bool), typeof(UnrelatedPOCOFake), new PropertyMetadata(false)));
+        }
+
+        [Fact]
+        public void AllowAttachedPropertyRegistrationOnPOCOs()
+        {
+            using (new DefaultImplementationFixture())
+                Dependency.Property.RegisterAttached("IsEnabled", typeof(bool), typeof(Object), new PropertyMetadata(false));
 
             using (new DefaultImplementationFixture())
-                Assert.Throws<InvalidOperationException>(
-                    () => Dependency.Property.RegisterAttachedReadOnly("IsEnabled", typeof(bool), typeof(UnrelatedPOCOFake), new PropertyMetadata(false)));
+                Dependency.Property.RegisterAttached("IsEnabled", typeof(bool), typeof(UnrelatedPOCOFake), new PropertyMetadata(false));
+
+            using (new DefaultImplementationFixture())
+                Dependency.Property.RegisterAttachedReadOnly("IsEnabled", typeof(bool), typeof(Object), new PropertyMetadata(false));
+
+            using (new DefaultImplementationFixture())
+                Dependency.Property.RegisterAttachedReadOnly("IsEnabled", typeof(bool), typeof(UnrelatedPOCOFake), new PropertyMetadata(false));
         }
 
         [Fact]
@@ -203,7 +203,7 @@ namespace XDependency.Tests
                 Assert.Throws<InvalidOperationException>(() => prop.GetMetadata(typeof(UnrelatedPOCOFake)));
             }
         }
-        
+
         [Fact]
         public void GetAttachedPropertyMetadataThrowsForPOCOTypes()
         {

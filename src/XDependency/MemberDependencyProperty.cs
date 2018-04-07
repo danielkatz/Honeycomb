@@ -10,6 +10,8 @@ namespace XDependency
         public MemberDependencyProperty(string name, Type propertyType, Type ownerType, IPropertyMetadata typeMetadata)
             : base(name, propertyType, ownerType, new PropertyMetadata(typeMetadata.DefaultValue))
         {
+            ownerType.EnsureDependencyObject();
+
             metadataMap[ownerType] = typeMetadata;
         }
 
