@@ -11,7 +11,7 @@ namespace XDependency
         readonly Type ownerType;
         readonly IDependencyObject owner;
 
-        readonly Dictionary<IDependencyProperty, object> localStore = new Dictionary<IDependencyProperty, object>();
+        readonly LocalValueStore localStore = new LocalValueStore();
 
         public DependencyComponent(IDependencyObject owner)
         {
@@ -33,30 +33,24 @@ namespace XDependency
         {
             EnsureNotReadOnly(dp);
 
-            localStore[dp] = value;
+            localStore.SetValue(dp, value);
         }
 
         public void SetValue(IDependencyPropertyKey key, object value)
         {
-            localStore[key.DependencyProperty] = value;
+            localStore.SetValue(key.DependencyProperty, value);
         }
 
         public void ClearValue(IDependencyProperty dp)
         {
             EnsureNotReadOnly(dp);
 
-            if (localStore.ContainsKey(dp))
-            {
-                localStore.Remove(dp);
-            }
+            localStore.ClearValue(dp);
         }
 
         public void ClearValue(IDependencyPropertyKey key)
         {
-            if (localStore.ContainsKey(key.DependencyProperty))
-            {
-                localStore.Remove(key.DependencyProperty);
-            }
+            localStore.ClearValue(key.DependencyProperty);
         }
 
         public object ReadLocalValue(IDependencyProperty dp)
