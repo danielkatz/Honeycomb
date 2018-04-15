@@ -76,6 +76,51 @@ namespace XDependency.Tests
         }
 
         [Fact]
+        public void PreventTwoPropertiesWithTheSameName()
+        {
+            using (new DefaultImplementationFixture())
+            {
+                var first = Dependency.Property.Register("IsEnabled", typeof(bool), typeof(DependencyObjectFake), new PropertyMetadata(false));
+
+                Assert.Throws<InvalidOperationException>(
+                    () => Dependency.Property.Register("IsEnabled", typeof(bool), typeof(DependencyObjectFake), new PropertyMetadata(false)));
+
+                Assert.Throws<InvalidOperationException>(
+                    () => Dependency.Property.RegisterAttached("IsEnabled", typeof(bool), typeof(DependencyObjectFake), new PropertyMetadata(false)));
+
+                Assert.Throws<InvalidOperationException>(
+                    () => Dependency.Property.RegisterReadOnly("IsEnabled", typeof(bool), typeof(DependencyObjectFake), new PropertyMetadata(false)));
+
+                Assert.Throws<InvalidOperationException>(
+                    () => Dependency.Property.RegisterAttachedReadOnly("IsEnabled", typeof(bool), typeof(DependencyObjectFake), new PropertyMetadata(false)));
+            }
+        }
+
+        [Fact]
+        public void PreventTwoPropertiesWithTheSameNameInDescendant()
+        {
+            using (new DefaultImplementationFixture())
+            {
+                var first = Dependency.Property.Register("IsEnabled", typeof(bool), typeof(DependencyObjectFake), new PropertyMetadata(false));
+
+                Assert.Throws<InvalidOperationException>(
+                    () => Dependency.Property.Register("IsEnabled", typeof(bool), typeof(DescendantDependencyObjectFake), new PropertyMetadata(false)));
+
+                Assert.Throws<InvalidOperationException>(
+                    () => Dependency.Property.Register("IsEnabled", typeof(bool), typeof(DescendantDependencyObjectFake), new PropertyMetadata(false)));
+
+                Assert.Throws<InvalidOperationException>(
+                    () => Dependency.Property.RegisterAttached("IsEnabled", typeof(bool), typeof(DescendantDependencyObjectFake), new PropertyMetadata(false)));
+
+                Assert.Throws<InvalidOperationException>(
+                    () => Dependency.Property.RegisterReadOnly("IsEnabled", typeof(bool), typeof(DescendantDependencyObjectFake), new PropertyMetadata(false)));
+
+                Assert.Throws<InvalidOperationException>(
+                    () => Dependency.Property.RegisterAttachedReadOnly("IsEnabled", typeof(bool), typeof(DescendantDependencyObjectFake), new PropertyMetadata(false)));
+            }
+        }
+
+        [Fact]
         public void RequireIDependencyObjectContract()
         {
             // related POCO
