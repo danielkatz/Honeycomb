@@ -43,7 +43,7 @@ namespace XDependency
         {
             var existing = FindByName(ownerType, dp.Name);
             if (existing != null)
-                throw new InvalidOperationException($"There is already a property named {dp.Name} registered on type {existing.OwnerType}..");
+                throw new InvalidOperationException($"There is already a property named {dp.Name} registered on type {existing.OwnerType}.");
 
             Dictionary<string, IDependencyProperty> typeRegistry = null;
             if (!properties.TryGetValue(ownerType, out typeRegistry))
