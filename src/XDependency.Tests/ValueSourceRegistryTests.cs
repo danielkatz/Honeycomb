@@ -19,8 +19,9 @@ namespace XDependency.Tests
             registry.AddFirst(x => new SecondValueSource());
             registry.AddFirst(x => new FirstValueSource());
 
-            Assert.Equal(typeof(FirstValueSource), registry.First());
-            Assert.Collection(registry, first => { }, second => { });
+            Assert.Collection(registry,
+                first => Assert.Equal(typeof(FirstValueSource), first),
+                second => Assert.Equal(typeof(SecondValueSource), second));
         }
 
         [Fact]
@@ -31,8 +32,9 @@ namespace XDependency.Tests
             registry.AddLast(x => new FirstValueSource());
             registry.AddLast(x => new SecondValueSource());
 
-            Assert.Equal(typeof(SecondValueSource), registry.Last());
-            Assert.Collection(registry, first => { }, second => { });
+            Assert.Collection(registry,
+                first => Assert.Equal(typeof(FirstValueSource), first),
+                second => Assert.Equal(typeof(SecondValueSource), second));
         }
 
         [Fact]
@@ -43,8 +45,9 @@ namespace XDependency.Tests
             registry.AddFirst(x => new SecondValueSource());
             registry.AddBefore<FirstValueSource, SecondValueSource>(x => new FirstValueSource());
 
-            Assert.Equal(typeof(FirstValueSource), registry.First());
-            Assert.Collection(registry, first => { }, second => { });
+            Assert.Collection(registry,
+                first => Assert.Equal(typeof(FirstValueSource), first),
+                second => Assert.Equal(typeof(SecondValueSource), second));
         }
 
         [Fact]
@@ -56,8 +59,35 @@ namespace XDependency.Tests
             registry.AddLast(x => new ThirdValueSource());
             registry.AddAfter<SecondValueSource, FirstValueSource>(x => new SecondValueSource());
 
-            Assert.Equal(typeof(SecondValueSource), registry.ElementAt(1));
-            Assert.Collection(registry, first => { }, second => { }, third => { });
+            Assert.Collection(registry,
+                first => Assert.Equal(typeof(FirstValueSource), first),
+                second => Assert.Equal(typeof(SecondValueSource), second),
+                third => Assert.Equal(typeof(ThirdValueSource), third));
+        }
+
+        [Fact]
+        public void CanRemove()
+        {
+            var registry = new ValueSourceRegistry();
+
+            registry.AddLast(x => new FirstValueSource());
+            registry.AddLast(x => new SecondValueSource());
+            registry.Remove<FirstValueSource>();
+
+            Assert.Collection(registry,
+                first => Assert.Equal(typeof(SecondValueSource), first));
+        }
+
+        [Fact]
+        public void CanClear()
+        {
+            var registry = new ValueSourceRegistry();
+
+            registry.AddLast(x => new FirstValueSource());
+            registry.AddLast(x => new SecondValueSource());
+            registry.Clear();
+
+            Assert.Empty(registry);
         }
 
         [Fact]
@@ -72,7 +102,21 @@ namespace XDependency.Tests
             Assert.Throws<ArgumentException>(() => registry.AddAfter<FirstValueSource, FirstValueSource>(x => new FirstValueSource()));
             Assert.Throws<ArgumentException>(() => registry.AddLast(x => new FirstValueSource()));
 
-            Assert.Collection(registry, i => { });
+            Assert.Collection(registry,
+                first => Assert.Equal(typeof(FirstValueSource), first));
+        }
+
+        [Fact]
+        public void CanNotAddBeforOrAfterNonRegisteredType()
+        {
+            var registry = new ValueSourceRegistry();
+
+            registry.AddLast(x => new FirstValueSource());
+
+            Assert.Throws<ArgumentException>(() => registry.AddBefore<ThirdValueSource, SecondValueSource>(x => new ThirdValueSource()));
+
+            Assert.Collection(registry,
+                first => Assert.Equal(typeof(FirstValueSource), first));
         }
 
         class FirstValueSource : IValueSource

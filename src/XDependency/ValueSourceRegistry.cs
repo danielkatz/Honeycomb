@@ -60,7 +60,7 @@ namespace XDependency
             var index = order.IndexOf(typeof(TTarget));
 
             if (index == -1)
-                throw new ArgumentOutOfRangeException(nameof(TTarget));
+                throw new ArgumentException(nameof(TTarget));
 
             return index;
         }

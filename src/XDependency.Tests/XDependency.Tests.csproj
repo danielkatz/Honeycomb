@@ -73,7 +73,6 @@
     <Compile Include="DependencyObjectTests.cs" />
     <Compile Include="DependencyPropertyTests.cs" />
     <Compile Include="Fakes\DependencyObjectFake.cs" />
-    <Compile Include="Fakes\OtherValueStoreFake.cs" />
     <Compile Include="Fakes\ValueStoreFake.cs" />
     <Compile Include="Fakes\SecondDependencyObjectFake.cs" />
     <Compile Include="Fixtures\DefaultImplementationFixture.cs" />
