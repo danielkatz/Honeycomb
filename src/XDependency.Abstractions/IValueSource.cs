@@ -8,6 +8,7 @@ namespace XDependency.Abstractions
     {
         bool HasValue(IDependencyProperty dp);
         bool TryGetValue(IDependencyProperty dp, out object value);
+        int Order { get; }
 
         // TODO: Property change notification mechanism
     }

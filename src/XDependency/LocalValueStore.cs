@@ -31,5 +31,7 @@ namespace XDependency
                 store.Remove(dp);
             }
         }
+
+        public int Order => throw new NotImplementedException();
     }
 }
