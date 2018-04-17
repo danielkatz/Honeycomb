@@ -11,12 +11,12 @@ namespace XDependency.Tests.Fixtures
     {
         public DefaultImplementationFixture()
         {
-            Dependency.Init(new DependencyComponentFactory(), new DependencyPropertyRegistryFactory());
+            Dependency.Init(new DependencyComponentFactory(), new DependencyPropertyRegistry(), new ValueSourceRegistry());
         }
 
         public void Dispose()
         {
-            Dependency.Init(null, null);
+            Dependency.Init(null, null, null);
         }
     }
 }
