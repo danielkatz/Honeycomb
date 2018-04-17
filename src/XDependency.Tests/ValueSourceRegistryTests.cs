@@ -20,6 +20,7 @@ namespace XDependency.Tests
             registry.AddFirst(x => new FirstValueSource());
 
             Assert.Equal(typeof(FirstValueSource), registry.First());
+            Assert.Collection(registry, first => { }, second => { });
         }
 
         [Fact]
@@ -31,6 +32,7 @@ namespace XDependency.Tests
             registry.AddLast(x => new SecondValueSource());
 
             Assert.Equal(typeof(SecondValueSource), registry.Last());
+            Assert.Collection(registry, first => { }, second => { });
         }
 
         [Fact]
@@ -42,6 +44,7 @@ namespace XDependency.Tests
             registry.AddBefore<FirstValueSource, SecondValueSource>(x => new FirstValueSource());
 
             Assert.Equal(typeof(FirstValueSource), registry.First());
+            Assert.Collection(registry, first => { }, second => { });
         }
 
         [Fact]
@@ -54,6 +57,7 @@ namespace XDependency.Tests
             registry.AddAfter<SecondValueSource, FirstValueSource>(x => new SecondValueSource());
 
             Assert.Equal(typeof(SecondValueSource), registry.ElementAt(1));
+            Assert.Collection(registry, first => { }, second => { }, third => { });
         }
 
         [Fact]
