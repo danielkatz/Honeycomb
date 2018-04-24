@@ -4,14 +4,10 @@ using System.Text;
 
 namespace XDependency.Abstractions
 {
-    public interface IValueSourceRegistry : IReadOnlyCollection<Type>
+    public interface IValueSourceRegistry
     {
-        void AddFirst<TSource>(Func<IDependencyObject, TSource> factory) where TSource : class, IValueSource;
-        void AddBefore<TSource, TTarget>(Func<IDependencyObject, TSource> factory) where TSource : class, IValueSource;
-        void AddAfter<TSource, TTarget>(Func<IDependencyObject, TSource> factory) where TSource : class, IValueSource;
-        void AddLast<TSource>(Func<IDependencyObject, TSource> factory) where TSource : class, IValueSource;
+        void Add<TSource>(Func<IDependencyComponent, int, TSource> factory) where TSource : class, IValueSource;
 
-        void Remove<TSource>();
-        void Clear();
+        IReadOnlyList<IValueSource> GetValueSources(IDependencyComponent component);
     }
 }

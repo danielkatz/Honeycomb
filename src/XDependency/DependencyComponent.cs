@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using XDependency.Abstractions;
 using XDependency.Abstractions.Extensions;
@@ -11,20 +12,40 @@ namespace XDependency
         readonly Type ownerType;
         readonly IDependencyObject owner;
 
-        readonly LocalValueStore localStore = new LocalValueStore();
+        readonly IReadOnlyList<IValueSource> valueSources;
+        readonly LocalValueStore localStore;
 
         public DependencyComponent(IDependencyObject owner)
         {
             this.owner = owner;
             this.ownerType = owner.GetType();
+
+            this.valueSources = Dependency.ValueSources.GetValueSources(this);
+            this.localStore = GetValueStore<LocalValueStore>();
+        }
+
+        private bool TryGetEffectiveValue(IDependencyProperty dp, out object value)
+        {
+            for (int i = 0; i < valueSources.Count; i++)
+            {
+                var source = valueSources[i];
+
+                if (source.TryGetValue(dp, out value))
+                {
+                    return true;
+                }
+            }
+            value = null;
+            return false;
         }
 
         public object GetValue(IDependencyProperty dp)
         {
-            if (localStore.TryGetValue(dp, out var value))
+            if (TryGetEffectiveValue(dp, out var value))
             {
                 return value;
             }
+
             var metadata = dp.GetMetadata(ownerType);
             return metadata.DefaultValue;
         }
@@ -71,6 +92,16 @@ namespace XDependency
         public void UnregisterPropertyChangedCallback(IDependencyProperty dp, long token)
         {
             throw new NotImplementedException();
+        }
+
+        public IPropertyMetadata GetMetadata(IDependencyProperty dp)
+        {
+            return dp.GetMetadata(this.ownerType);
+        }
+
+        public T GetValueStore<T>() where T : IValueStore
+        {
+            return valueSources.OfType<T>().First();
         }
 
         static void EnsureNotReadOnly(IDependencyProperty dp)

@@ -12,6 +12,7 @@ namespace XDependency.Tests.Fixtures
         public DefaultImplementationFixture()
         {
             Dependency.Init(new DependencyComponentFactory(), new DependencyPropertyRegistry(), new ValueSourceRegistry());
+            Dependency.ValueSources.Add((c, i) => new LocalValueStore());
         }
 
         public void Dispose()

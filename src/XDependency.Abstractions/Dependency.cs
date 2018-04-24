@@ -8,20 +8,20 @@ namespace XDependency.Abstractions
     {
         static IDependencyComponentFactory componentFactory;
         static IDependencyPropertyRegistry propertyRegistry;
-        static IValueSourceRegistry valueSourceRegistry;
+        static IValueSourceRegistry valueSourceFactory;
 
         public static void Init(
             IDependencyComponentFactory componentFactory,
             IDependencyPropertyRegistry propertyRegistry,
-            IValueSourceRegistry valueSourceRegistry)
+            IValueSourceRegistry valueSourceFactory)
         {
             Dependency.componentFactory = componentFactory;
             Dependency.propertyRegistry = propertyRegistry;
-            Dependency.valueSourceRegistry = valueSourceRegistry;
+            Dependency.valueSourceFactory = valueSourceFactory;
         }
 
         public static IDependencyComponentFactory Component => componentFactory;
         public static IDependencyPropertyRegistry Property => propertyRegistry;
-        public static IValueSourceRegistry ValueSources => valueSourceRegistry;
+        public static IValueSourceRegistry ValueSources => valueSourceFactory;
     }
 }

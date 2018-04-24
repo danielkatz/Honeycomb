@@ -21,5 +21,9 @@ namespace XDependency.Abstractions
         long RegisterPropertyChangedCallback(IDependencyProperty dp, DependencyPropertyChangedCallback callback);
 
         void UnregisterPropertyChangedCallback(IDependencyProperty dp, long token);
+
+        IPropertyMetadata GetMetadata(IDependencyProperty dp);
+
+        T GetValueStore<T>() where T : IValueStore;
     }
 }
