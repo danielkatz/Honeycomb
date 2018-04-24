@@ -11,7 +11,7 @@ using Xunit;
 
 namespace XDependency.Tests
 {
-    public class DependencyObjectTests
+    public partial class DependencyObjectTests
     {
         [Fact]
         public void InstansiateEmptyObject()

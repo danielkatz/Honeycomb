@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using XDependency.Abstractions;
 
-namespace XDependency.Abstractions
+namespace XDependency
 {
     public static class Dependency
     {

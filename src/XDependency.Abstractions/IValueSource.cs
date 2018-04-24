@@ -6,10 +6,10 @@ namespace XDependency.Abstractions
 {
     public interface IValueSource
     {
-        bool HasValue(IDependencyProperty dp);
-        bool TryGetValue(IDependencyProperty dp, out object value);
-        int Order { get; }
+        event ValueChangedCallback ValueChanged;
 
-        // TODO: Property change notification mechanism
+        bool HasValue(IDependencyProperty dp);
+        IMaybe<object> GetValue(IDependencyProperty dp);
+        int Order { get; }
     }
 }

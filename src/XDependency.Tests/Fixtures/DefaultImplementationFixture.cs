@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using XDependency.Abstractions;
+using XDependency.Tests.Fakes;
 
 namespace XDependency.Tests.Fixtures
 {
@@ -12,7 +13,8 @@ namespace XDependency.Tests.Fixtures
         public DefaultImplementationFixture()
         {
             Dependency.Init(new DependencyComponentFactory(), new DependencyPropertyRegistry(), new ValueSourceRegistry());
-            Dependency.ValueSources.Add((c, i) => new LocalValueStore());
+            Dependency.ValueSources.Add((c, i) => new ValueStoreFake(c, i));
+            Dependency.ValueSources.Add((c, i) => new LocalValueStore(c, i));
         }
 
         public void Dispose()

@@ -22,28 +22,37 @@ namespace XDependency
 
             this.valueSources = Dependency.ValueSources.GetValueSources(this);
             this.localStore = GetValueStore<LocalValueStore>();
+
+            for (int i = 0; i < this.valueSources.Count; i++)
+            {
+                this.valueSources[i].ValueChanged += OnValueChanged;
+            }
         }
 
-        private bool TryGetEffectiveValue(IDependencyProperty dp, out object value)
+        private IMaybe<object> GetEffectiveValue(IDependencyProperty dp)
         {
             for (int i = 0; i < valueSources.Count; i++)
             {
-                var source = valueSources[i];
-
-                if (source.TryGetValue(dp, out value))
+                var maybe = valueSources[i].GetValue(dp);
+                if (maybe.HasValue)
                 {
-                    return true;
+                    return maybe;
                 }
             }
-            value = null;
-            return false;
+            return Maybe.None<object>();
+        }
+
+        public void OnValueChanged(IValueSource source, ValueChangedEventArgs e)
+        {
+            //throw new NotImplementedException();
         }
 
         public object GetValue(IDependencyProperty dp)
         {
-            if (TryGetEffectiveValue(dp, out var value))
+            var maybe = GetEffectiveValue(dp);
+            if (maybe.HasValue)
             {
-                return value;
+                return maybe.Value;
             }
 
             var metadata = dp.GetMetadata(ownerType);
