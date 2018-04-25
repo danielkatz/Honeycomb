@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using XDependency.Abstractions;
 using XDependency.Tests.Fakes;
+using Xunit;
 
+[assembly: CollectionBehavior(DisableTestParallelization = true)]
 namespace XDependency.Tests.Fixtures
 {
     class DefaultImplementationFixture : IDisposable
