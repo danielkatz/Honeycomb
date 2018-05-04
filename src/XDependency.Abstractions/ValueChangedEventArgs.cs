@@ -14,9 +14,9 @@ namespace XDependency.Abstractions
             NewValue = newValue;
         }
 
-        IDependencyComponent Component { get; }
-        IDependencyProperty Property { get; }
-        IMaybe<object> OldValue { get; }
-        IMaybe<object> NewValue { get; }
+        public IDependencyComponent Component { get; }
+        public IDependencyProperty Property { get; }
+        public IMaybe<object> OldValue { get; }
+        public IMaybe<object> NewValue { get; }
     }
 }
