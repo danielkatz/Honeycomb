@@ -41,5 +41,7 @@ namespace XDependency
         public object DefaultValue => defaultValue;
 
         public CreateDefaultValueCallback CreateDefaultValueCallback => createDefaultValueCallback;
+
+        public PropertyChangedCallback PropertyChangedCallback => propertyChangedCallback;
     }
 }

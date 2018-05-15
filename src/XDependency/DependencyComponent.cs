@@ -42,9 +42,62 @@ namespace XDependency
             return Maybe.None<object>();
         }
 
+        private IValueSource GetHighestPrecedenceSetValueSource(IDependencyProperty dp, int startIndex = 0)
+        {
+            for (int i = startIndex; i < valueSources.Count; i++)
+            {
+                var store = valueSources[i];
+                if (store.HasValue(dp))
+                {
+                    return store;
+                }
+            }
+
+            return null;
+        }
+
         public void OnValueChanged(IValueSource source, ValueChangedEventArgs e)
         {
-            //throw new NotImplementedException();
+            var highestSetValueSource = GetHighestPrecedenceSetValueSource(e.Property, 0);
+
+            if (highestSetValueSource != null && source.Order > highestSetValueSource.Order)
+                return;
+
+            var metadata = GetMetadata(e.Property);
+
+            if (e.OldValue.HasValue && e.NewValue.HasValue)
+            {
+                RaisePropertyChanged(e.Property, metadata, e.OldValue.Value, e.NewValue.Value);
+            }
+            else
+            {
+                var below = GetHighestPrecedenceSetValueSource(e.Property, source.Order + 1);
+                var belowValue = below?.GetValue(e.Property) ?? Maybe.None<object>();
+                var previousValue = belowValue.Case(s => s, () => metadata.DefaultValue);
+
+                if (!e.OldValue.HasValue) // none -> value
+                {
+                    if (!object.Equals(e.NewValue.Value, previousValue))
+                    {
+                        RaisePropertyChanged(e.Property, metadata, previousValue, e.NewValue.Value);
+                    }
+                }
+                else if (!e.NewValue.HasValue) // value -> none
+                {
+                    if (!object.Equals(e.OldValue.Value, previousValue))
+                    {
+                        RaisePropertyChanged(e.Property, metadata, e.OldValue.Value, previousValue);
+                    }
+                }
+            }
+        }
+
+        void RaisePropertyChanged(IDependencyProperty dp, IPropertyMetadata metadata, object oldValue, object newValue)
+        {
+            if (metadata.PropertyChangedCallback != null)
+            {
+                metadata.PropertyChangedCallback(this.owner, new DependencyPropertyChangedEventArgs(dp, oldValue, newValue));
+            }
         }
 
         public object GetValue(IDependencyProperty dp)

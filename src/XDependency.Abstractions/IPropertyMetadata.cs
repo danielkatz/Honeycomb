@@ -5,6 +5,9 @@
         void Merge(IPropertyMetadata baseMetadata);
 
         object DefaultValue { get; }
+
         CreateDefaultValueCallback CreateDefaultValueCallback { get; }
+
+        PropertyChangedCallback PropertyChangedCallback { get; }
     }
 }
