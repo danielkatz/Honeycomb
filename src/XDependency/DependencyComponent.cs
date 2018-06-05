@@ -15,6 +15,8 @@ namespace XDependency
         readonly IReadOnlyList<IValueSource> valueSources;
         readonly LocalValueStore localStore;
 
+        private IDependencyComponent valueInheritanceParent = null;
+
         public DependencyComponent(IDependencyObject owner)
         {
             this.owner = owner;
@@ -29,7 +31,7 @@ namespace XDependency
             }
         }
 
-        private IMaybe<object> GetEffectiveValue(IDependencyProperty dp)
+        private IMaybe<object> ResolveEffectiveStoresValue(IDependencyProperty dp)
         {
             for (int i = 0; i < valueSources.Count; i++)
             {
@@ -92,7 +94,7 @@ namespace XDependency
             }
         }
 
-        void RaisePropertyChanged(IDependencyProperty dp, IPropertyMetadata metadata, object oldValue, object newValue)
+        private void RaisePropertyChanged(IDependencyProperty dp, IPropertyMetadata metadata, object oldValue, object newValue)
         {
             if (metadata.PropertyChangedCallback != null)
             {
@@ -100,15 +102,26 @@ namespace XDependency
             }
         }
 
+        private void OnInheritanceParentChanged(IDependencyComponent oldParent, IDependencyComponent newParent)
+        {
+
+        }
+
         public object GetValue(IDependencyProperty dp)
         {
-            var maybe = GetEffectiveValue(dp);
+            var maybe = ResolveEffectiveStoresValue(dp);
             if (maybe.HasValue)
             {
                 return maybe.Value;
             }
 
             var metadata = dp.GetMetadata(ownerType);
+
+            if (metadata.Inherits && valueInheritanceParent != null)
+            {
+                return valueInheritanceParent.GetValue(dp);
+            }
+
             return metadata.DefaultValue;
         }
 
@@ -170,6 +183,21 @@ namespace XDependency
         {
             if (dp.IsReadOnly)
                 throw new InvalidOperationException($"{dp.Name} is a read only property and should be changed using an {nameof(IDependencyPropertyKey)}");
+        }
+
+        public IDependencyComponent ValueInheritanceParent
+        {
+            get => valueInheritanceParent;
+            set
+            {
+                if (!object.Equals(valueInheritanceParent, value))
+                {
+                    var oldParent = valueInheritanceParent;
+                    valueInheritanceParent = value;
+
+                    OnInheritanceParentChanged(oldParent, value);
+                }
+            }
         }
     }
 }

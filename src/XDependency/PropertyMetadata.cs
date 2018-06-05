@@ -11,26 +11,18 @@ namespace XDependency
         readonly CreateDefaultValueCallback createDefaultValueCallback;
         readonly PropertyChangedCallback propertyChangedCallback;
 
-        public PropertyMetadata(object defaultValue)
-        {
-            this.defaultValue = defaultValue;
-        }
-
-        public PropertyMetadata(object defaultValue, PropertyChangedCallback propertyChangedCallback)
+        public PropertyMetadata(object defaultValue, PropertyChangedCallback propertyChangedCallback = null, bool inherits = false)
         {
             this.defaultValue = defaultValue;
             this.propertyChangedCallback = propertyChangedCallback;
+            this.Inherits = inherits;
         }
 
-        public PropertyMetadata(CreateDefaultValueCallback createDefaultValueCallback)
-        {
-            this.createDefaultValueCallback = createDefaultValueCallback;
-        }
-
-        public PropertyMetadata(CreateDefaultValueCallback createDefaultValueCallback, PropertyChangedCallback propertyChangedCallback)
+        public PropertyMetadata(CreateDefaultValueCallback createDefaultValueCallback, PropertyChangedCallback propertyChangedCallback = null, bool inherits = false)
         {
             this.createDefaultValueCallback = createDefaultValueCallback;
             this.propertyChangedCallback = propertyChangedCallback;
+            this.Inherits = inherits;
         }
 
         public void Merge(IPropertyMetadata baseMetadata)
@@ -39,6 +31,8 @@ namespace XDependency
         }
 
         public object DefaultValue => defaultValue;
+
+        public bool Inherits { get; private set; }
 
         public CreateDefaultValueCallback CreateDefaultValueCallback => createDefaultValueCallback;
 

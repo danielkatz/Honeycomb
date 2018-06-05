@@ -6,6 +6,8 @@
 
         object DefaultValue { get; }
 
+        bool Inherits { get; }
+
         CreateDefaultValueCallback CreateDefaultValueCallback { get; }
 
         PropertyChangedCallback PropertyChangedCallback { get; }
