@@ -52,8 +52,8 @@ namespace XDependency.Tests
                         Action<IDependencyObject, DependencyPropertyChangedEventArgs> handler = null;
 
                         var owner = new DependencyObjectFake();
-                        var high = owner.Component.GetValueStore<ValueStoreFake>();
-                        var low = owner.Component.GetValueStore<LocalValueStore>();
+                        var high = owner.Component.GetValueSource<ValueStoreFake>();
+                        var low = owner.Component.GetValueSource<LocalValueStore>();
 
                         var prop = Dependency.Property.Register("Value", typeof(string), typeof(DependencyObjectFake),
                             new PropertyMetadata(test.DEFAULT, (d, e) => handler?.Invoke(d, e)));

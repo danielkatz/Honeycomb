@@ -24,8 +24,8 @@ namespace XDependency.Abstractions
 
         IPropertyMetadata GetMetadata(IDependencyProperty dp);
 
-        T GetValueStore<T>() where T : IValueStore;
+        T GetValueSource<T>() where T : IValueSource;
 
-        IDependencyComponent ValueInheritanceParent { get; set; }
+        //IDependencyComponent ValueInheritanceParent { get; set; }
     }
 }

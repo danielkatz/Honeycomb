@@ -15,15 +15,13 @@ namespace XDependency
         readonly IReadOnlyList<IValueSource> valueSources;
         readonly LocalValueStore localStore;
 
-        private IDependencyComponent valueInheritanceParent = null;
-
         public DependencyComponent(IDependencyObject owner)
         {
             this.owner = owner;
             this.ownerType = owner.GetType();
 
             this.valueSources = Dependency.ValueSources.GetValueSources(this);
-            this.localStore = GetValueStore<LocalValueStore>();
+            this.localStore = GetValueSource<LocalValueStore>();
 
             for (int i = 0; i < this.valueSources.Count; i++)
             {
@@ -102,11 +100,6 @@ namespace XDependency
             }
         }
 
-        private void OnInheritanceParentChanged(IDependencyComponent oldParent, IDependencyComponent newParent)
-        {
-
-        }
-
         public object GetValue(IDependencyProperty dp)
         {
             var maybe = ResolveEffectiveStoresValue(dp);
@@ -116,12 +109,6 @@ namespace XDependency
             }
 
             var metadata = dp.GetMetadata(ownerType);
-
-            if (metadata.Inherits && valueInheritanceParent != null)
-            {
-                return valueInheritanceParent.GetValue(dp);
-            }
-
             return metadata.DefaultValue;
         }
 
@@ -174,7 +161,7 @@ namespace XDependency
             return dp.GetMetadata(this.ownerType);
         }
 
-        public T GetValueStore<T>() where T : IValueStore
+        public T GetValueSource<T>() where T : IValueSource
         {
             return valueSources.OfType<T>().First();
         }
@@ -183,21 +170,6 @@ namespace XDependency
         {
             if (dp.IsReadOnly)
                 throw new InvalidOperationException($"{dp.Name} is a read only property and should be changed using an {nameof(IDependencyPropertyKey)}");
-        }
-
-        public IDependencyComponent ValueInheritanceParent
-        {
-            get => valueInheritanceParent;
-            set
-            {
-                if (!object.Equals(valueInheritanceParent, value))
-                {
-                    var oldParent = valueInheritanceParent;
-                    valueInheritanceParent = value;
-
-                    OnInheritanceParentChanged(oldParent, value);
-                }
-            }
         }
     }
 }

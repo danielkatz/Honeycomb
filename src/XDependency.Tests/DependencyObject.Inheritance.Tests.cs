@@ -14,19 +14,20 @@ namespace XDependency.Tests
     public partial class DependencyObjectTests
     {
         [Fact]
-        public void CanInhertitValueFromParent()
+        public void CanInheritValueFromParent()
         {
             using (new DefaultImplementationFixture())
             {
                 var prop = Dependency.Property.RegisterAttached("AttachedValue", typeof(string), typeof(DependencyObjectFake), new PropertyMetadata("default", inherits: true));
                 var parent = new DependencyObjectFake();
                 var child = new DependencyObjectFake();
+                var childInheritanceSource = child.Component.GetValueSource<InheritanceValueSource>();
 
                 parent.SetValue(prop, "inherited");
 
                 Assert.Equal("default", child.GetValue(prop));
 
-                child.Component.ValueInheritanceParent = parent.Component;
+                childInheritanceSource.ParentComponent = parent.Component;
 
                 Assert.Equal("inherited", child.GetValue(prop));
             }

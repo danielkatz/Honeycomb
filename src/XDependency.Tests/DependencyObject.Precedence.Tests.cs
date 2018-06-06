@@ -21,7 +21,7 @@ namespace XDependency.Tests
                 var member = Dependency.Property.Register("Value", typeof(string), typeof(DependencyObjectFake), new PropertyMetadata("default"));
                 var attached = Dependency.Property.RegisterAttached("AttachedValue", typeof(string), typeof(DependencyObjectFake), new PropertyMetadata("default"));
                 var owner = new DependencyObjectFake();
-                var top = owner.Component.GetValueStore<ValueStoreFake>();
+                var top = owner.Component.GetValueSource<ValueStoreFake>();
 
                 top.SetValue(member, "top");
                 owner.SetValue(member, "local");
@@ -42,7 +42,7 @@ namespace XDependency.Tests
                 var member = Dependency.Property.Register("Value", typeof(string), typeof(DependencyObjectFake), new PropertyMetadata("default"));
                 var attached = Dependency.Property.RegisterAttached("AttachedValue", typeof(string), typeof(DependencyObjectFake), new PropertyMetadata("default"));
                 var owner = new DependencyObjectFake();
-                var top = owner.Component.GetValueStore<ValueStoreFake>();
+                var top = owner.Component.GetValueSource<ValueStoreFake>();
 
                 owner.SetValue(member, "local");
                 top.SetValue(member, "top");
@@ -63,7 +63,7 @@ namespace XDependency.Tests
                 var member = Dependency.Property.Register("Value", typeof(string), typeof(DependencyObjectFake), new PropertyMetadata("default"));
                 var attached = Dependency.Property.RegisterAttached("AttachedValue", typeof(string), typeof(DependencyObjectFake), new PropertyMetadata("default"));
                 var owner = new DependencyObjectFake();
-                var top = owner.Component.GetValueStore<ValueStoreFake>();
+                var top = owner.Component.GetValueSource<ValueStoreFake>();
 
                 top.SetValue(member, "top");
                 owner.SetValue(member, "local");
@@ -86,7 +86,7 @@ namespace XDependency.Tests
                 var member = Dependency.Property.Register("Value", typeof(string), typeof(DependencyObjectFake), new PropertyMetadata("default"));
                 var attached = Dependency.Property.RegisterAttached("AttachedValue", typeof(string), typeof(DependencyObjectFake), new PropertyMetadata("default"));
                 var owner = new DependencyObjectFake();
-                var top = owner.Component.GetValueStore<ValueStoreFake>();
+                var top = owner.Component.GetValueSource<ValueStoreFake>();
 
                 top.SetValue(member, "top");
                 owner.SetValue(member, "local");
@@ -109,7 +109,7 @@ namespace XDependency.Tests
                 var member = Dependency.Property.Register("Value", typeof(string), typeof(DependencyObjectFake), new PropertyMetadata("default"));
                 var attached = Dependency.Property.RegisterAttached("AttachedValue", typeof(string), typeof(DependencyObjectFake), new PropertyMetadata("default"));
                 var owner = new DependencyObjectFake();
-                var top = owner.Component.GetValueStore<ValueStoreFake>();
+                var top = owner.Component.GetValueSource<ValueStoreFake>();
 
                 top.SetValue(member, null);
                 owner.SetValue(member, "local");

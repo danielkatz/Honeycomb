@@ -17,6 +17,7 @@ namespace XDependency.Tests.Fixtures
             Dependency.Init(new DependencyComponentFactory(), new DependencyPropertyRegistry(), new ValueSourceRegistry());
             Dependency.ValueSources.Add((c, i) => new ValueStoreFake(c, i));
             Dependency.ValueSources.Add((c, i) => new LocalValueStore(c, i));
+            Dependency.ValueSources.Add((c, i) => new InheritanceValueSource(c, i));
         }
 
         public void Dispose()
