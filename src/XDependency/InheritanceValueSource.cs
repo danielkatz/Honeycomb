@@ -41,7 +41,19 @@ namespace XDependency
 
         public void OnInheritanceParentChanged(IDependencyComponent oldParent, IDependencyComponent newParent)
         {
-            
+            if (oldParent != null)
+            {
+                oldParent.PropertyChanged -= OnParentPropertyChanged;
+            }
+            if (newParent != null)
+            {
+                newParent.PropertyChanged += OnParentPropertyChanged;
+            }
+        }
+
+        private void OnParentPropertyChanged(IDependencyObject sender, DependencyPropertyChangedEventArgs args)
+        {
+            ValueChanged?.Invoke(this, new ValueChangedEventArgs(sender.Component, args.Property, Maybe.FromValue(args.OldValue), Maybe.FromValue(args.NewValue)));
         }
 
         public int Order { get; }

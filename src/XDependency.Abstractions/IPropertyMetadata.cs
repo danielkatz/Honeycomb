@@ -10,6 +10,6 @@
 
         CreateDefaultValueCallback CreateDefaultValueCallback { get; }
 
-        PropertyChangedCallback PropertyChangedCallback { get; }
+        DependencyPropertyChangedCallback PropertyChangedCallback { get; }
     }
 }

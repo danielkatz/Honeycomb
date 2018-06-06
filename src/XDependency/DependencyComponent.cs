@@ -15,6 +15,8 @@ namespace XDependency
         readonly IReadOnlyList<IValueSource> valueSources;
         readonly LocalValueStore localStore;
 
+        public event DependencyPropertyChangedCallback PropertyChanged; // TODO: should be a weak event
+
         public DependencyComponent(IDependencyObject owner)
         {
             this.owner = owner;
@@ -94,10 +96,10 @@ namespace XDependency
 
         private void RaisePropertyChanged(IDependencyProperty dp, IPropertyMetadata metadata, object oldValue, object newValue)
         {
-            if (metadata.PropertyChangedCallback != null)
-            {
-                metadata.PropertyChangedCallback(this.owner, new DependencyPropertyChangedEventArgs(dp, oldValue, newValue));
-            }
+            var args = new DependencyPropertyChangedEventArgs(dp, oldValue, newValue);
+
+            metadata.PropertyChangedCallback?.Invoke(this.owner, args);
+            PropertyChanged?.Invoke(this.owner, args);
         }
 
         public object GetValue(IDependencyProperty dp)
@@ -142,16 +144,6 @@ namespace XDependency
         }
 
         public object GetAnimationBaseValue(IDependencyProperty dp)
-        {
-            throw new NotImplementedException();
-        }
-
-        public long RegisterPropertyChangedCallback(IDependencyProperty dp, DependencyPropertyChangedCallback callback)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UnregisterPropertyChangedCallback(IDependencyProperty dp, long token)
         {
             throw new NotImplementedException();
         }

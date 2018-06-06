@@ -4,6 +4,8 @@ namespace XDependency.Abstractions
 {
     public interface IDependencyComponent
     {
+        event DependencyPropertyChangedCallback PropertyChanged;
+
         object GetValue(IDependencyProperty dp);
 
         void SetValue(IDependencyProperty dp, object value);
@@ -18,14 +20,8 @@ namespace XDependency.Abstractions
 
         object GetAnimationBaseValue(IDependencyProperty dp);
 
-        long RegisterPropertyChangedCallback(IDependencyProperty dp, DependencyPropertyChangedCallback callback);
-
-        void UnregisterPropertyChangedCallback(IDependencyProperty dp, long token);
-
         IPropertyMetadata GetMetadata(IDependencyProperty dp);
 
         T GetValueSource<T>() where T : IValueSource;
-
-        //IDependencyComponent ValueInheritanceParent { get; set; }
     }
 }

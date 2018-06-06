@@ -9,16 +9,16 @@ namespace XDependency
     {
         readonly object defaultValue;
         readonly CreateDefaultValueCallback createDefaultValueCallback;
-        readonly PropertyChangedCallback propertyChangedCallback;
+        readonly DependencyPropertyChangedCallback propertyChangedCallback;
 
-        public PropertyMetadata(object defaultValue, PropertyChangedCallback propertyChangedCallback = null, bool inherits = false)
+        public PropertyMetadata(object defaultValue, DependencyPropertyChangedCallback propertyChangedCallback = null, bool inherits = false)
         {
             this.defaultValue = defaultValue;
             this.propertyChangedCallback = propertyChangedCallback;
             this.Inherits = inherits;
         }
 
-        public PropertyMetadata(CreateDefaultValueCallback createDefaultValueCallback, PropertyChangedCallback propertyChangedCallback = null, bool inherits = false)
+        public PropertyMetadata(CreateDefaultValueCallback createDefaultValueCallback, DependencyPropertyChangedCallback propertyChangedCallback = null, bool inherits = false)
         {
             this.createDefaultValueCallback = createDefaultValueCallback;
             this.propertyChangedCallback = propertyChangedCallback;
@@ -36,6 +36,6 @@ namespace XDependency
 
         public CreateDefaultValueCallback CreateDefaultValueCallback => createDefaultValueCallback;
 
-        public PropertyChangedCallback PropertyChangedCallback => propertyChangedCallback;
+        public DependencyPropertyChangedCallback PropertyChangedCallback => propertyChangedCallback;
     }
 }

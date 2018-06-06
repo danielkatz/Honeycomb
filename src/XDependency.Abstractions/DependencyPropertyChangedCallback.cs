@@ -4,5 +4,5 @@ using System.Text;
 
 namespace XDependency.Abstractions
 {
-    public delegate void DependencyPropertyChangedCallback(IDependencyObject sender, IDependencyProperty dp);
+    public delegate void DependencyPropertyChangedCallback(IDependencyObject sender, DependencyPropertyChangedEventArgs args);
 }

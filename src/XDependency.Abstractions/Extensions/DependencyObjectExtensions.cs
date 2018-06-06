@@ -40,15 +40,5 @@ namespace XDependency.Abstractions.Extensions
         {
             return obj.Component.GetAnimationBaseValue(dp);
         }
-
-        public static long RegisterPropertyChangedCallback(this IDependencyObject obj, IDependencyProperty dp, DependencyPropertyChangedCallback callback)
-        {
-            return obj.Component.RegisterPropertyChangedCallback(dp, callback);
-        }
-
-        public static void UnregisterPropertyChangedCallback(this IDependencyObject obj, IDependencyProperty dp, long token)
-        {
-            obj.Component.UnregisterPropertyChangedCallback(dp, token);
-        }
     }
 }
