@@ -66,8 +66,10 @@ namespace XDependency
 
             var metadata = GetMetadata(e.Property);
 
-            if (e.OldValue.HasValue && e.NewValue.HasValue)
+            if (e.OldValue.HasValue && e.NewValue.HasValue) // value_a -> value_b
             {
+                effectiveSources[e.Property] = source;
+
                 RaisePropertyChanged(e.Property, metadata, e.OldValue.Value, e.NewValue.Value);
             }
             else

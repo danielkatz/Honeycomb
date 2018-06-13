@@ -41,13 +41,47 @@ namespace XDependency
 
         public void OnInheritanceParentChanged(IDependencyComponent oldParent, IDependencyComponent newParent)
         {
+            var allSetProperties = new HashSet<IDependencyProperty>();
             if (oldParent != null)
             {
                 oldParent.PropertyChanged -= OnParentPropertyChanged;
+
+                foreach (var item in oldParent.SetProperties)
+                {
+                    if (Component.GetMetadata(item).IsInherited)
+                    {
+                        allSetProperties.Add(item);
+                    }
+                }
             }
+
             if (newParent != null)
             {
                 newParent.PropertyChanged += OnParentPropertyChanged;
+
+                foreach (var item in newParent.SetProperties)
+                {
+                    if (Component.GetMetadata(item).IsInherited)
+                    {
+                        allSetProperties.Add(item);
+                    }
+                }
+            }
+
+            foreach (var dp in allSetProperties)
+            {
+                var oldValue = oldParent != null
+                    ? Maybe.FromValue(oldParent.GetValue(dp))
+                    : Maybe.None<object>();
+
+                var newValue = newParent != null
+                    ? Maybe.FromValue(newParent.GetValue(dp))
+                    : Maybe.None<object>();
+
+                if (!oldValue.Equals(newValue))
+                {
+                    ValueChanged?.Invoke(this, new ValueChangedEventArgs(Component, dp, oldValue, newValue));
+                }
             }
         }
 
