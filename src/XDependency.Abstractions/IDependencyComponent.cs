@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace XDependency.Abstractions
 {
@@ -23,5 +24,7 @@ namespace XDependency.Abstractions
         IPropertyMetadata GetMetadata(IDependencyProperty dp);
 
         T GetValueSource<T>() where T : IValueSource;
+
+        IReadOnlyCollection<IDependencyProperty> SetProperties { get; }
     }
 }

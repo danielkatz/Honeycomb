@@ -11,12 +11,5 @@ namespace XDependency
             : base(name, propertyType, ownerType, defaultMetadata)
         {
         }
-
-        public override IPropertyMetadata GetMetadata(Type forType)
-        {
-            forType.EnsureDependencyObject();
-
-            return DefaultMetadata;
-        }
     }
 }

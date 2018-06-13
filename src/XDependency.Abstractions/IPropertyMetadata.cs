@@ -6,7 +6,7 @@
 
         object DefaultValue { get; }
 
-        bool Inherits { get; }
+        bool IsInherited { get; }
 
         CreateDefaultValueCallback CreateDefaultValueCallback { get; }
 

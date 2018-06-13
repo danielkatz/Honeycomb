@@ -12,5 +12,8 @@ namespace XDependency.Abstractions
         bool IsReadOnly { get; }
         Type PropertyType { get; }
         Type OwnerType { get; }
+
+        void OverrideMetadata(Type forType, IPropertyMetadata typeMetadata);
+        void OverrideMetadata(Type forType, IPropertyMetadata typeMetadata, IDependencyPropertyKey key);
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using XDependency.Abstractions;
+using XDependency.Helpers;
 
 namespace XDependency
 {
@@ -18,7 +19,40 @@ namespace XDependency
             this.DefaultMetadata = defaultMetadata;
         }
 
-        public abstract IPropertyMetadata GetMetadata(Type forType);
+        public virtual IPropertyMetadata GetMetadata(Type forType)
+        {
+            for (var type = forType; type.IsDependencyObject(); type = type.BaseType)
+            {
+                if (metadataMap.TryGetValue(type, out var metadata))
+                {
+                    return metadata;
+                }
+            }
+
+            return DefaultMetadata;
+        }
+
+        public void OverrideMetadata(Type forType, IPropertyMetadata typeMetadata)
+        {
+            this.EnsureNotReadOnly();
+
+            OverrideMetadataCommon(forType, typeMetadata);
+        }
+
+        public void OverrideMetadata(Type forType, IPropertyMetadata typeMetadata, IDependencyPropertyKey key)
+        {
+            this.VerifyReadOnlyKey(key);
+
+            OverrideMetadataCommon(forType, typeMetadata);
+        }
+
+        protected virtual void OverrideMetadataCommon(Type forType, IPropertyMetadata typeMetadata)
+        {
+            var baseMetadata = GetMetadata(forType);
+            typeMetadata.Merge(baseMetadata);
+
+            metadataMap[forType] = typeMetadata;
+        }
 
         public IDependencyPropertyKey MakeReadOnly()
         {

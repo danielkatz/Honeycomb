@@ -250,15 +250,15 @@ namespace XDependency.Tests
         }
 
         [Fact]
-        public void GetAttachedPropertyMetadataThrowsForPOCOTypes()
+        public void GetAttachedPropertyMetadataDoesNotThrowForPOCOTypes()
         {
             using (new DefaultImplementationFixture())
             {
                 var metadata = new PropertyMetadata(false);
                 var prop = Dependency.Property.RegisterAttached("IsEnabled", typeof(bool), typeof(DependencyObjectFake), metadata);
 
-                Assert.Throws<InvalidOperationException>(() => prop.GetMetadata(typeof(Object)));
-                Assert.Throws<InvalidOperationException>(() => prop.GetMetadata(typeof(UnrelatedPOCOFake)));
+                Assert.Same(metadata, prop.GetMetadata(typeof(UnrelatedPOCOFake)));
+                Assert.Same(metadata, prop.GetMetadata(typeof(Object)));
             }
         }
 

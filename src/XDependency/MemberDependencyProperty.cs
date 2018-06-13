@@ -8,26 +8,32 @@ namespace XDependency
     public class MemberDependencyProperty : DependencyPropertyBase
     {
         public MemberDependencyProperty(string name, Type propertyType, Type ownerType, IPropertyMetadata typeMetadata)
-            : base(name, propertyType, ownerType, new PropertyMetadata(typeMetadata.DefaultValue))
+            : base(name, propertyType, ownerType, CreateDefaultPropertyMetadata(typeMetadata))
         {
-            ownerType.EnsureDependencyObject();
-
-            metadataMap[ownerType] = typeMetadata;
+            OverrideMetadata(ownerType, typeMetadata);
         }
 
         public override IPropertyMetadata GetMetadata(Type forType)
         {
             forType.EnsureDependencyObject();
 
-            for (var type = forType; type.IsDependencyObject(); type = type.BaseType)
-            {
-                if (metadataMap.TryGetValue(type, out var metadata))
-                {
-                    return metadata;
-                }
-            }
+            return base.GetMetadata(forType);
+        }
 
-            return DefaultMetadata;
+        protected override void OverrideMetadataCommon(Type forType, IPropertyMetadata typeMetadata)
+        {
+            forType.EnsureDependencyObject();
+
+            base.OverrideMetadataCommon(forType, typeMetadata);
+        }
+
+        private static IPropertyMetadata CreateDefaultPropertyMetadata(IPropertyMetadata typeMetadata)
+        {
+            if (typeMetadata.CreateDefaultValueCallback != null)
+            {
+                return new PropertyMetadata(typeMetadata.CreateDefaultValueCallback);
+            }
+            return new PropertyMetadata(typeMetadata.DefaultValue);
         }
     }
 }

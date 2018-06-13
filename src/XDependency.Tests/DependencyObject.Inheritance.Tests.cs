@@ -18,7 +18,7 @@ namespace XDependency.Tests
         {
             using (new DefaultImplementationFixture())
             {
-                var prop = Dependency.Property.RegisterAttached("AttachedValue", typeof(string), typeof(DependencyObjectFake), new PropertyMetadata("default", inherits: true));
+                var prop = Dependency.Property.RegisterAttached("AttachedValue", typeof(string), typeof(DependencyObjectFake), new PropertyMetadata("default", isInherited: true));
                 var parent = new DependencyObjectFake();
                 var child = new DependencyObjectFake();
                 var childInheritanceSource = child.Component.GetValueSource<InheritanceValueSource>();
@@ -44,7 +44,7 @@ namespace XDependency.Tests
                 var child = new DependencyObjectFake();
                 var childInheritanceSource = child.Component.GetValueSource<InheritanceValueSource>();
 
-                var prop = Dependency.Property.RegisterAttached("AttachedValue", typeof(string), typeof(DependencyObjectFake), new PropertyMetadata("default", inherits: true, propertyChangedCallback: (s, e) =>
+                var prop = Dependency.Property.RegisterAttached("AttachedValue", typeof(string), typeof(DependencyObjectFake), new PropertyMetadata("default", isInherited: true, propertyChangedCallback: (s, e) =>
                 {
                     if (object.ReferenceEquals(s, child))
                     {
@@ -60,6 +60,43 @@ namespace XDependency.Tests
 
                 Assert.Equal("inherited", child.GetValue(prop));
                 Assert.Equal(1, raised);
+            }
+        }
+
+        [Fact]
+        public void RaisesPropertyChangedOnParentChange()
+        {
+            using (new DefaultImplementationFixture())
+            {
+                var raised = 0;
+
+                var parent1 = new DependencyObjectFake();
+                var parent2 = new DependencyObjectFake();
+
+                var child = new DependencyObjectFake();
+                var childInheritanceSource = child.Component.GetValueSource<InheritanceValueSource>();
+
+                var prop = Dependency.Property.RegisterAttached("AttachedValue", typeof(string), typeof(DependencyObjectFake), new PropertyMetadata("default", isInherited: true, propertyChangedCallback: (s, e) =>
+                {
+                    if (object.ReferenceEquals(s, child))
+                    {
+                        raised++;
+                    }
+                }));
+
+                parent1.SetValue(prop, "inherited1");
+                parent2.SetValue(prop, "inherited2");
+
+                childInheritanceSource.ParentComponent = parent1.Component;
+                Assert.Equal("inherited1", child.GetValue(prop));
+
+                childInheritanceSource.ParentComponent = parent2.Component;
+                Assert.Equal("inherited2", child.GetValue(prop));
+
+                childInheritanceSource.ParentComponent = null;
+                Assert.Equal("default", child.GetValue(prop));
+
+                Assert.Equal(3, raised);
             }
         }
     }

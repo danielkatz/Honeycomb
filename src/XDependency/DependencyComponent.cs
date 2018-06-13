@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using XDependency.Abstractions;
 using XDependency.Abstractions.Extensions;
+using XDependency.Helpers;
 
 namespace XDependency
 {
@@ -14,6 +15,7 @@ namespace XDependency
 
         readonly IReadOnlyList<IValueSource> valueSources;
         readonly LocalValueStore localStore;
+        readonly Dictionary<IDependencyProperty, IValueSource> effectiveSources;
 
         public event DependencyPropertyChangedCallback PropertyChanged; // TODO: should be a weak event
 
@@ -23,6 +25,7 @@ namespace XDependency
             this.ownerType = owner.GetType();
 
             this.valueSources = Dependency.ValueSources.GetValueSources(this);
+            this.effectiveSources = new Dictionary<IDependencyProperty, IValueSource>();
             this.localStore = GetValueSource<LocalValueStore>();
 
             for (int i = 0; i < this.valueSources.Count; i++)
@@ -33,13 +36,9 @@ namespace XDependency
 
         private IMaybe<object> ResolveEffectiveStoresValue(IDependencyProperty dp)
         {
-            for (int i = 0; i < valueSources.Count; i++)
+            if (effectiveSources.TryGetValue(dp, out var source))
             {
-                var maybe = valueSources[i].GetValue(dp);
-                if (maybe.HasValue)
-                {
-                    return maybe;
-                }
+                return source.GetValue(dp);
             }
             return Maybe.None<object>();
         }
@@ -79,6 +78,8 @@ namespace XDependency
 
                 if (!e.OldValue.HasValue) // none -> value
                 {
+                    effectiveSources[e.Property] = source;
+
                     if (!object.Equals(e.NewValue.Value, previousValue))
                     {
                         RaisePropertyChanged(e.Property, metadata, previousValue, e.NewValue.Value);
@@ -86,6 +87,15 @@ namespace XDependency
                 }
                 else if (!e.NewValue.HasValue) // value -> none
                 {
+                    if (below == null)
+                    {
+                        effectiveSources.Remove(e.Property);
+                    }
+                    else
+                    {
+                        effectiveSources[e.Property] = below;
+                    }
+
                     if (!object.Equals(e.OldValue.Value, previousValue))
                     {
                         RaisePropertyChanged(e.Property, metadata, e.OldValue.Value, previousValue);
@@ -116,7 +126,7 @@ namespace XDependency
 
         public void SetValue(IDependencyProperty dp, object value)
         {
-            EnsureNotReadOnly(dp);
+            dp.EnsureNotReadOnly();
 
             localStore.SetValue(dp, value);
         }
@@ -128,7 +138,7 @@ namespace XDependency
 
         public void ClearValue(IDependencyProperty dp)
         {
-            EnsureNotReadOnly(dp);
+            dp.EnsureNotReadOnly();
 
             localStore.ClearValue(dp);
         }
@@ -158,10 +168,6 @@ namespace XDependency
             return valueSources.OfType<T>().First();
         }
 
-        static void EnsureNotReadOnly(IDependencyProperty dp)
-        {
-            if (dp.IsReadOnly)
-                throw new InvalidOperationException($"{dp.Name} is a read only property and should be changed using an {nameof(IDependencyPropertyKey)}");
-        }
+        public IReadOnlyCollection<IDependencyProperty> SetProperties => effectiveSources.Keys;
     }
 }

@@ -31,7 +31,7 @@ namespace XDependency
             if (parent != null)
             {
                 var metadata = Component.GetMetadata(dp);
-                if (metadata.Inherits)
+                if (metadata.IsInherited)
                 {
                     return true;
                 }
@@ -63,7 +63,7 @@ namespace XDependency
             get => parent;
             set
             {
-                if (!object.Equals(parent, value))
+                if (!object.ReferenceEquals(parent, value))
                 {
                     var oldParent = parent;
                     parent = value;
