@@ -46,11 +46,11 @@ namespace XDependency
             {
                 oldParent.PropertyChanged -= OnParentPropertyChanged;
 
-                foreach (var item in oldParent.SetProperties)
+                foreach (var dp in oldParent.SetProperties)
                 {
-                    if (Component.GetMetadata(item).IsInherited)
+                    if (Component.GetMetadata(dp).IsInherited)
                     {
-                        allSetProperties.Add(item);
+                        allSetProperties.Add(dp);
                     }
                 }
             }
@@ -59,11 +59,11 @@ namespace XDependency
             {
                 newParent.PropertyChanged += OnParentPropertyChanged;
 
-                foreach (var item in newParent.SetProperties)
+                foreach (var dp in newParent.SetProperties)
                 {
-                    if (Component.GetMetadata(item).IsInherited)
+                    if (Component.GetMetadata(dp).IsInherited)
                     {
-                        allSetProperties.Add(item);
+                        allSetProperties.Add(dp);
                     }
                 }
             }
