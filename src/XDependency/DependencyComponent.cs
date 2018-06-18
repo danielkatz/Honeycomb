@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using XDependency.Abstractions;
 using XDependency.Abstractions.Extensions;
-using XDependency.Helpers;
+using XDependency.Utility;
 
 namespace XDependency
 {

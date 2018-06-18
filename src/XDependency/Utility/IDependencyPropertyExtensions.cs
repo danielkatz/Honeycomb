@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using XDependency.Abstractions;
 
-namespace XDependency.Helpers
+namespace XDependency.Utility
 {
     public static class IDependencyPropertyExtensions
     {

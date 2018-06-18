@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using XDependency.Abstractions;
-using XDependency.Helpers;
+using XDependency.Utility;
 
 namespace XDependency
 {
