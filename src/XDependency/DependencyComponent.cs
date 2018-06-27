@@ -82,7 +82,7 @@ namespace XDependency
                 {
                     effectiveSources[e.Property] = source;
 
-                    if (!object.Equals(e.NewValue.Value, previousValue))
+                    if (Helpers.AreDifferent(e.NewValue.Value, previousValue))
                     {
                         RaisePropertyChanged(e.Property, metadata, previousValue, e.NewValue.Value);
                     }
@@ -98,7 +98,7 @@ namespace XDependency
                         effectiveSources[e.Property] = below;
                     }
 
-                    if (!object.Equals(e.OldValue.Value, previousValue))
+                    if (Helpers.AreDifferent(e.OldValue.Value, previousValue))
                     {
                         RaisePropertyChanged(e.Property, metadata, e.OldValue.Value, previousValue);
                     }

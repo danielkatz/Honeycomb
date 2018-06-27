@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using XDependency.Abstractions;
+using XDependency.Utility;
 
 namespace XDependency
 {
@@ -32,7 +33,7 @@ namespace XDependency
             var oldValue = GetValue(dp);
             var newValue = Maybe.FromValue(value);
 
-            if (!oldValue.Equals(newValue))
+            if (Helpers.AreDifferent(oldValue, newValue))
             {
                 store[dp] = value;
 

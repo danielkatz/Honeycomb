@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using XDependency.Abstractions;
+using XDependency.Utility;
 
 namespace XDependency
 {
@@ -78,7 +79,7 @@ namespace XDependency
                     ? Maybe.FromValue(newParent.GetValue(dp))
                     : Maybe.None<object>();
 
-                if (!oldValue.Equals(newValue))
+                if (Helpers.AreDifferent(oldValue, newValue))
                 {
                     ValueChanged?.Invoke(this, new ValueChangedEventArgs(Component, dp, oldValue, newValue));
                 }

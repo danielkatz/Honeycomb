@@ -77,30 +77,13 @@ namespace XDependency.Tests
         [Fact]
         public void Equal5()
         {
-            var maybe1 = Maybe<object>.FromValue("fox");
-            var maybe2 = Maybe<string>.FromValue("fox");
-
-            Assert.True(object.Equals(maybe1, maybe2));
-        }
-
-        [Fact]
-        public void Equal6()
-        {
-            var maybe = Maybe<object>.FromValue("fox");
-
-            Assert.True(object.Equals(maybe, "fox"));
-        }
-
-        [Fact]
-        public void Equal7()
-        {
             var maybe = Maybe<object>.None;
 
             Assert.False(object.Equals(maybe, "fox"));
         }
 
         [Fact]
-        public void Equal8()
+        public void Equal6()
         {
             var maybe = Maybe<object>.None;
 
@@ -108,7 +91,7 @@ namespace XDependency.Tests
         }
 
         [Fact]
-        public void Equal9()
+        public void Equal7()
         {
             var maybe1 = Maybe<string>.None;
             var maybe2 = Maybe<string>.FromValue("fox");

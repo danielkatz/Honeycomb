@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using XDependency.Abstractions;
+using XDependency.Utility;
 
 namespace XDependency
 {
@@ -38,18 +39,7 @@ namespace XDependency
                 }
                 else
                 {
-                    return object.Equals(maybe.value, this.value);
-                }
-            }
-            else if (obj is T value)
-            {
-                if (!this.hasValue)
-                {
-                    return false;
-                }
-                else
-                {
-                    return object.Equals(value, this.value);
+                    return !Helpers.AreDifferent(maybe.value, this.value);
                 }
             }
             return false;
