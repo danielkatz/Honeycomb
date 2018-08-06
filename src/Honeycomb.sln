@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Honeycomb.Xaml.Abstractions
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Honeycomb.Xaml", "Honeycomb.Xaml\Honeycomb.Xaml.csproj", "{471508A9-A8FC-4FC0-A1B3-EFEC434E276F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Honeycomb.Xaml.Tests", "Honeycomb.Xaml.Tests\Honeycomb.Xaml.Tests.csproj", "{90CB50F2-17C9-45C3-937D-124B81EE3630}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Honeycomb.Xaml.Tests", "Honeycomb.Xaml.Tests\Honeycomb.Xaml.Tests.csproj", "{90CB50F2-17C9-45C3-937D-124B81EE3630}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Honeycomb", "Honeycomb\Honeycomb.csproj", "{7F9DBF6F-294D-4BEC-8D69-633FB60A7263}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{90CB50F2-17C9-45C3-937D-124B81EE3630}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90CB50F2-17C9-45C3-937D-124B81EE3630}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{90CB50F2-17C9-45C3-937D-124B81EE3630}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F9DBF6F-294D-4BEC-8D69-633FB60A7263}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F9DBF6F-294D-4BEC-8D69-633FB60A7263}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F9DBF6F-294D-4BEC-8D69-633FB60A7263}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F9DBF6F-294D-4BEC-8D69-633FB60A7263}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
